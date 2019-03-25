@@ -17,7 +17,7 @@ val javaVersion = JavaVersion.VERSION_1_8
 val junitJupiterVersion = "5.4.0"
 val selenideVersion = "5.2.2"
 val kotlinVersion = "1.3.21"
-val gradleVersion = "5.2.1"
+val gradleVersion = "5.3"
 
 allprojects {
     group = "com.github.daggerok"
