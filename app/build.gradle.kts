@@ -15,8 +15,6 @@ val kotlinVersion = "1.3.21"
 
 repositories {
   mavenCentral()
-  maven(url = "https://repo.spring.io/snapshot")
-  maven(url = "https://repo.spring.io/milestone")
 }
 
 java {
@@ -61,7 +59,6 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.projectreactor:reactor-test")
 
-  implementation(kotlin("stdlib-jdk8"))
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 

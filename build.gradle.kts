@@ -10,7 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.21"
     id("com.avast.gradle.docker-compose").version("0.9.1")
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
-    id("org.springframework.boot") version "2.2.0.M1" apply false
+    id("org.springframework.boot") version "2.1.3.RELEASE" apply false
 }
 
 val javaVersion = JavaVersion.VERSION_1_8
@@ -48,9 +48,9 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    implementation(kotlin("reflect"))
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     testImplementation(platform("com.codeborne:selenide:$selenideVersion"))
     testImplementation(platform("org.junit:junit-bom:$junitJupiterVersion"))

@@ -22,9 +22,10 @@ before_install:
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
   - stop_any 80 8080
 script:
-  - ./gradlew
+  - ./gradlew clean
+  - ./gradlew assemble -S
   #
-  - bash ./build/libs/*.war &
+  - java -jar ./app/build/libs/*.war &
   - wait_for 8080
   - http :8080/actuator/ | jq '._links'
   - http :8080/actuator/health | jq '.'
@@ -37,9 +38,5 @@ script:
   - ./gradlew :test -P remote -P firefox
   - ./gradlew :test -P remote -P chrome
   - ./gradlew composeDown
-cache:
-  packages: true
-  directories:
-    - ~/.gradle
 notifications:
   email: false
