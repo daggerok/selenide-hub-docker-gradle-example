@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My E2E test</title>
+</head>
+<body>
+<div id="message">Immediately</div>
+<div id="message-with-delay"></div>
+<script>
+  document.addEventListener("DOMContentLoaded", function (evt) {
+    setMessage("on DOMContentLoaded event...");
+
+    setTimeout(function onTimeout() {
+      setMessage("on setTimeout!");
+    }, 2500);
+
+    function setMessage(message) {
+      document.querySelector("#message-with-delay").textContent = message;
+    }
+  }, false);
+</script>
+</body>
+</html>

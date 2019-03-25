@@ -1,0 +1,103 @@
+version: '2.1'
+networks:
+  net:
+    driver: bridge
+services:
+  app:
+    build: ./app
+    networks:
+      net:
+        aliases:
+          - app
+          - app.net
+    ports: ["8080:8080"]
+  hub:
+    image: selenium/hub:3.141.59-mercury
+    networks:
+      net:
+        aliases:
+          - hub
+          - hub.net
+    ports: ['4444:4444']
+    healthcheck:
+      test: curl http://127.0.0.1:4444/ || exit 1
+  chrome:
+    image: selenium/node-chrome:3.141.59-mercury
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      hub:
+        condition: service_healthy
+    environment:
+      HUB_HOST: hub.net
+      HUB_PORT: 4444
+      #SCREEN_DEPTH: 24
+      #SCREEN_WIDTH: 1360
+      #SCREEN_HEIGHT: 768
+      #NODE_MAX_SESSION: 2
+    networks:
+      net:
+        aliases:
+          - chrome
+          - chrome.net
+    #ports: ['5555']
+    healthcheck:
+      test: curl http://127.0.0.1:5555/ || exit 1
+  firefox:
+    image: selenium/node-firefox:3.141.59-mercury
+    shm_size: 2g
+    depends_on:
+      hub:
+        condition: service_healthy
+    environment:
+      HUB_HOST: hub.net
+      HUB_PORT: 4444
+      #SCREEN_DEPTH: 24
+      #SCREEN_WIDTH: 1360
+      #SCREEN_HEIGHT: 768
+      #NODE_MAX_SESSION: 2
+    networks:
+      net:
+        aliases:
+          - firefox
+          - firefox.net
+    #ports: ['5555']
+    healthcheck:
+      test: curl http://127.0.0.1:5555/ || exit 1
+
+
+## run app without intermediate docker image, only by using docker-compose
+#  app:
+#    image: openjdk:8u191-jdk-alpine3.9
+#    networks: [net]
+#    ports: ["8080:8080"]
+#    volumes: ["./app/build/libs:/tmp/app"]
+#    working_dir: /tmp/app
+#    command: ash -c 'java -jar *.war'
+#    healthcheck:
+#      disable: true
+
+
+## standalone (for example: chrome)
+#  app:
+#    build: ./app
+#    networks:
+#      net:
+#        aliases:
+#          - app
+#          - app.net
+#    ports: ["8080:8080"]
+#  chrome:
+#    image: selenium/standalone-chrome:3.141.59-mercury
+#    volumes:
+#      - /dev/shm:/dev/shm
+#    environment:
+#      JAVA_OPTS: -Djava.security.egd=file:/dev/./urandom
+#    networks:
+#      net:
+#        aliases:
+#          - chrome
+#          - chrome.net
+#    ports: ['4444:4444']
+#    healthcheck:
+#      test: curl http://127.0.0.1:4444/ || exit 1
